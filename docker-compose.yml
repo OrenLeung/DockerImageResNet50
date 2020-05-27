@@ -34,7 +34,7 @@ services:
       - CLIENT_SLEEP=0.25  # Time in  between each poll by web server against Redis
       - CLIENT_MAX_TRIES=100  # Num tries by web server to retrieve results from Redis before giving up
       # - MAXWORKERS=2 # limit the number of slaves for fastapi
-      volumes:
+    volumes:
         - ./webserver:/app
         
     #auto refresh for deployment
