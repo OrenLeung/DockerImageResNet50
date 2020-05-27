@@ -27,12 +27,14 @@ async function updatePredTable(preds) {
 }
 
 async function addImage(file) {
-	let imgDiv = document.getElementById('img-div');
-	imgDiv.innerHTML = '';
+	if (img.src !== URL.createObjectURL(file)) {
+		let imgDiv = document.getElementById('img-div');
+		imgDiv.innerHTML = '';
 
-	var img = document.createElement('img');
-	img.src = URL.createObjectURL(file);
-	imgDiv.append(img);
+		var img = document.createElement('img');
+		img.src = URL.createObjectURL(file);
+		imgDiv.append(img);
+	}
 }
 
 async function postResult(file) {
