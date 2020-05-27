@@ -34,8 +34,8 @@ services:
       - CLIENT_SLEEP=0.25  # Time in  between each poll by web server against Redis
       - CLIENT_MAX_TRIES=100  # Num tries by web server to retrieve results from Redis before giving up
       # - MAXWORKERS=2 # limit the number of slaves for fastapi
-    volumes:
-        - ./webserver:/app
+    # volumes:
+    #     - ./webserver:/app
         
     #auto refresh for deployment
     #command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--debug", "--port", "80", "--reload-dir", "/app"]
