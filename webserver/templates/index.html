@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>Item Details</title>
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    <h1>HELLO WORLD</h1>
+    <input type='file' />
+    <br><img id="myImg" src="#" alt="your image" height=200 width=200>
+
+    <script>
+        window.addEventListener('load', function() {
+        document.querySelector('input[type="file"]').addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                var img = document.querySelector('img');  // $('img')[0]
+                img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+            }
+            });
+        });
+    </script>
+
+</body>
+</html>

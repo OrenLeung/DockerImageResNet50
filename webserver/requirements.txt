@@ -3,3 +3,5 @@ keras
 Pillow
 redis
 python-multipart
+aiofiles
+jinja2

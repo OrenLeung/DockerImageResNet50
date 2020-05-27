@@ -12,6 +12,10 @@ from PIL import Image
 import redis
 
 from fastapi import FastAPI, File, HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
 from starlette.requests import Request
 
 app = FastAPI()
@@ -24,6 +28,11 @@ IMAGE_QUEUE = os.environ.get("IMAGE_QUEUE")
 
 IMAGE_WIDTH = int(os.environ.get("IMAGE_WIDTH"))
 IMAGE_HEIGHT = int(os.environ.get("IMAGE_HEIGHT"))
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+templates = Jinja2Templates(directory="templates")
 
 
 def prepare_image(image, target):
@@ -42,8 +51,8 @@ def prepare_image(image, target):
 
 
 @app.get("/")
-def index():
-    return "Hello World!"
+def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.post("/predict")
@@ -85,7 +94,6 @@ def predict(request: Request, img_file: bytes = File(...)):
                 break
 
             # Sleep for a small amount to give the model a chance to classify the input image
-
             time.sleep(CLIENT_SLEEP)
 
             # Indicate that the request was a success
