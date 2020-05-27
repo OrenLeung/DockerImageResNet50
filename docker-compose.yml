@@ -7,7 +7,7 @@ services:
     - deployml_network
 
   modelserver:
-    image: shanesoh/modelserver
+    image: editsync/modelserver
     build: ./modelserver
     depends_on:
     - redis
@@ -17,10 +17,10 @@ services:
     - app.env
     environment:
     - SERVER_SLEEP=0.25  # Time in ms between each poll by model server against Redis
-    - BATCH_SIZE=32
+    - BATCH_SIZE=32 # max batch size in parallel for each queue
 
   webserver:
-    image: shanesoh/webserver
+    image: editsync/webserver
     build: ./webserver
     ports:
     - "80:80"
@@ -31,10 +31,14 @@ services:
     env_file:
     - app.env
     environment:
-    - CLIENT_SLEEP=0.25  # Time in ms between each poll by web server against Redis
-    - CLIENT_MAX_TRIES=100  # Num tries by web server to retrieve results from Redis before giving up
-    # - MAXWORKERS=2 # limit the number of slaves for fastapi
-
+      - CLIENT_SLEEP=0.25  # Time in  between each poll by web server against Redis
+      - CLIENT_MAX_TRIES=100  # Num tries by web server to retrieve results from Redis before giving up
+      # - MAXWORKERS=2 # limit the number of slaves for fastapi
+      volumes:
+        - ./webserver:/app
+        
+    #auto refresh for deployment
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--debug", "--port", "80", "--reload-dir", "/app"]
 
 networks:
     deployml_network:
